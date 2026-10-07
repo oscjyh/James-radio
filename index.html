@@ -1,4 +1,10 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>JAMES RADIO v5.2</title>
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>JAMES RADIO APP v6.0</title>
+<meta name="theme-color" content="#0b1116">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="James Radio">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icon-192.png">
 <style>
 :root{--bg:#0b1116;--card:#1a232c;--line:#35424d;--txt:#edf1f5;--muted:#aeb8c2;--gold:#dfa43b;--live:#e54d4d}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}.wrap{max-width:1220px;margin:auto;padding:28px}
@@ -17,6 +23,33 @@ header{display:flex;justify-content:space-between;align-items:center;border-bott
 .meter.right{transform:scaleX(-1)}
 .logoCore{min-width:190px;text-align:center}
 @media(max-width:600px){.meterWrap{gap:8px;padding:0 6px}.meter{width:75px;gap:2px}.bar{width:4px}.logoCore{min-width:125px}.jr{font-size:54px!important}.brand b{font-size:15px!important}}
+
+.mobileVolNote{display:none}
+@media(max-width:700px){
+  .wrap{padding:14px}
+  header{padding-bottom:14px;gap:10px}
+  h1{font-size:22px;letter-spacing:2.5px}
+  header .muted{font-size:10px;text-align:right}
+  .hero{margin-top:16px;padding:20px 14px;gap:18px}
+  .hero h2{font-size:25px;margin:8px 0}
+  .hero p{font-size:13px;line-height:1.5}
+  .brand{height:150px}
+  .meter{height:58px}
+  .section{margin:20px 0 10px;font-size:15px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .station{min-height:88px;padding:11px;border-radius:10px}
+  .freq{font-size:22px;margin:6px 0 4px}
+  .name{font-size:11px}
+  .genre{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .player{margin-top:22px;padding:15px 0 18px}
+  .now{font-size:14px;margin-bottom:12px;line-height:1.5}
+  .controls{grid-template-columns:1fr 1fr;gap:9px}
+  .btn{height:50px;font-size:15px;min-height:44px}
+  .controls>span:not(#vp){display:none}
+  #vol,#vp{display:none}
+  .mobileVolNote{display:block;grid-column:1/-1;text-align:center;color:#aeb8c2;font-size:12px;padding:7px 4px 1px;line-height:1.45}
+  .foot{font-size:11px;line-height:1.55;margin-top:12px}
+}
 </style></head><body><div class="wrap">
 <header><h1>JAMES RADIO</h1><div class="muted">SEOUL · INCHEON · GYEONGGI FM</div></header>
 <section class="hero"><div><div class="muted">수도권 인터넷 라디오</div><h2>Good Music, Better World</h2><p class="muted">89.1 ~ 107.7 MHz · 외부 페이지 이동 없이 바로 재생</p></div><div class="brand"><div class="meterWrap">
@@ -25,11 +58,20 @@ header{display:flex;justify-content:space-between;align-items:center;border-bott
 <div class="meter right" aria-hidden="true"><i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"></i></div>
 </div></div></section>
 <div class="section"><span>수도권 FM · 26 Stations</span><span>주파수 순</span></div><div class="grid" id="grid"></div>
-<div class="player"><div class="now"><span class="live" id="live">● LIVE</span><span id="status">방송을 선택해 주세요.</span></div><div class="controls"><button class="btn" id="play">▶ 재생</button><button class="btn" id="mute">음소거</button><span>볼륨</span><input id="vol" type="range" min="0" max="1" step=".01" value=".5"><span id="vp">50%</span></div><div class="foot">JAMES RADIO v5.2 · 방송 스트림 제공처 정책이나 주소가 변경되면 일부 채널이 일시적으로 재생되지 않을 수 있습니다.</div></div><audio id="audio" preload="none" playsinline></audio></div>
+<div class="player"><div class="now"><span class="live" id="live">● LIVE</span><span id="status">방송을 선택해 주세요.</span></div><div class="controls"><button class="btn" id="play">▶ 재생</button><button class="btn" id="mute">음소거</button><span>볼륨</span><input id="vol" type="range" min="0" max="1" step=".01" value=".5"><span id="vp">50%</span><div id="mobileVolNote" class="mobileVolNote">📱 휴대폰에서는 기기 측면 볼륨 버튼으로 음량을 조절하세요.</div></div><div class="foot">JAMES RADIO APP v6.0 · 방송 스트림 제공처 정책이나 주소가 변경되면 일부 채널이 일시적으로 재생되지 않을 수 있습니다.</div></div><audio id="audio" preload="none" playsinline></audio></div>
 <script>
 const S=[{freq:"89.1",name:"KBS CoolFM",genre:"KBS 2FM",url:"https://radio.bsod.kr/stream/?stn=kbs&ch=2fm"},{freq:"89.7",name:"WBS 원음방송",genre:"원음방송",url:"https://radio.bsod.kr/stream/?stn=wbs"},{freq:"90.7",name:"iFM 경인방송",genre:"인천·경기",url:"https://radio.bsod.kr/stream/?stn=ifm"},{freq:"91.9",name:"MBC FM4U",genre:"음악·예능",url:"https://radio.bsod.kr/stream/?stn=mbc&ch=mfm"},{freq:"93.1",name:"KBS ClassicFM",genre:"클래식",url:"https://radio.bsod.kr/stream/?stn=kbs&ch=1fm"},{freq:"93.9",name:"CBS 음악FM",genre:"음악",url:"https://radio.bsod.kr/stream/?stn=cbs&ch=mfm"},{freq:"94.5",name:"YTN 라디오",genre:"뉴스FM",url:"https://radio.bsod.kr/stream/?stn=ytn"},{freq:"95.1",name:"TBS FM",genre:"교통·생활",url:"https://radio.bsod.kr/stream/?stn=tbs&ch=fm"},{freq:"95.9",name:"MBC 표준FM",genre:"종합",url:"https://radio.bsod.kr/stream/?stn=mbc&ch=sfm"},{freq:"96.7",name:"KFN 국방FM",genre:"국방·종합",url:"https://radio.bsod.kr/stream/?stn=kookbang"},{freq:"97.3",name:"KBS 1Radio",genre:"KBS 제1라디오",url:"https://radio.bsod.kr/stream/?stn=kbs&ch=1radio"},{freq:"98.1",name:"CBS 표준FM",genre:"종합",url:"https://radio.bsod.kr/stream/?stn=cbs&ch=sfm"},{freq:"99.1",name:"국악방송",genre:"국악·문화",url:"https://radio.bsod.kr/stream/?stn=kugak"},{freq:"99.9",name:"OBS 라디오",genre:"경기·수도권",url:"https://radio.bsod.kr/stream/?stn=obs"},{freq:"100.5",name:"TBN 경인교통방송",genre:"교통·생활",url:"https://radio.bsod.kr/stream/?stn=tbn&ch=gyeongin"},{freq:"101.1",name:"KFN 국방FM",genre:"양평 중계",url:"https://radio.bsod.kr/stream/?stn=kookbang"},{freq:"101.3",name:"TBS eFM",genre:"영어방송",url:"https://radio.bsod.kr/stream/?stn=tbs&ch=efm"},{freq:"101.9",name:"BBS 불교방송",genre:"불교·종합",url:"https://radio.bsod.kr/stream/?stn=bbs"},{freq:"102.7",name:"AFN Eagle FM",genre:"미군방송",url:"https://radio.bsod.kr/stream/?stn=afn&city=humphreys"},{freq:"103.5",name:"SBS LoveFM",genre:"종합·음악",url:"https://radio.bsod.kr/stream/?stn=sbs&ch=lovefm"},{freq:"104.5",name:"EBS FM",genre:"교육·외국어",url:"https://radio.bsod.kr/stream/?stn=ebs&ch=fm"},{freq:"104.9",name:"KBS 3Radio",genre:"사랑의 소리방송",url:"https://radio.bsod.kr/stream/?stn=kbs&ch=3radio"},{freq:"105.3",name:"CPBC 평화방송",genre:"가톨릭·종합",url:"https://radio.bsod.kr/stream/?stn=cpbc"},{freq:"106.1",name:"KBS HappyFM",genre:"KBS 2Radio",url:"https://radio.bsod.kr/stream/?stn=kbs&ch=2radio"},{freq:"106.9",name:"FEBC 극동방송",genre:"기독교·종합",url:"https://radio.bsod.kr/stream/?stn=febc&ch=seoul"},{freq:"107.7",name:"SBS PowerFM",genre:"음악·예능",url:"https://radio.bsod.kr/stream/?stn=sbs&ch=powerfm"}],A=document.querySelector("#audio"),G=document.querySelector("#grid"),ST=document.querySelector("#status"),L=document.querySelector("#live");let cur=-1;
 S.forEach((s,i)=>{let b=document.createElement("button");b.className="station";b.dataset.i=i;b.innerHTML=`<div class="name">${String(i+1).padStart(2,"0")} / ${s.name}</div><div class="freq">${s.freq}</div><div class="genre">${s.genre}</div>`;b.onclick=()=>go(i);G.appendChild(b)});
-async function go(i){cur=i;let s=S[i];document.querySelectorAll(".station").forEach(x=>x.classList.toggle("active",+x.dataset.i===i));A.pause();A.src=s.url;ST.textContent=`${s.freq} · ${s.name} · 연결 중...`;L.style.display="none";try{await A.play();ST.textContent=`${s.freq} · ${s.name} · 재생 중`;L.style.display="inline-block"}catch(e){ST.textContent=`${s.freq} · ${s.name} · 재생 실패 (${e.name})`}}
+async function go(i){cur=i;let s=S[i];
+localStorage.setItem("jamesRadioLastStation", String(i));
+if("mediaSession" in navigator){
+  navigator.mediaSession.metadata=new MediaMetadata({
+    title:s.name,
+    artist:s.freq+" MHz · James Radio",
+    album:"Seoul · Incheon · Gyeonggi FM",
+    artwork:[{src:"./icon-512.png",sizes:"512x512",type:"image/png"}]
+  });
+}document.querySelectorAll(".station").forEach(x=>x.classList.toggle("active",+x.dataset.i===i));A.pause();A.src=s.url;ST.textContent=`${s.freq} · ${s.name} · 연결 중...`;L.style.display="none";try{await A.play();ST.textContent=`${s.freq} · ${s.name} · 재생 중`;L.style.display="inline-block"}catch(e){ST.textContent=`${s.freq} · ${s.name} · 재생 실패 (${e.name})`}}
 document.querySelector("#play").onclick=async()=>{if(cur<0)return go(0);if(A.paused){try{await A.play();L.style.display="inline-block";ST.textContent=`${S[cur].freq} · ${S[cur].name} · 재생 중`}catch(e){}}else{A.pause();L.style.display="none";ST.textContent=`${S[cur].freq} · ${S[cur].name} · 일시정지`}};
 A.onplay=()=>document.querySelector("#play").textContent="❚❚ 정지";A.onpause=()=>document.querySelector("#play").textContent="▶ 재생";A.onerror=()=>{if(cur>=0){ST.textContent=`${S[cur].freq} · ${S[cur].name} · 스트림 연결 오류`;L.style.display="none"}};
 document.querySelector("#mute").onclick=()=>{A.muted=!A.muted;document.querySelector("#mute").textContent=A.muted?"음소거 해제":"음소거"};const V=document.querySelector("#vol");A.volume=.5;V.oninput=()=>{A.volume=+V.value;document.querySelector("#vp").textContent=Math.round(A.volume*100)+"%"};
@@ -56,4 +98,30 @@ function meterFrame(){
   meterRAF=requestAnimationFrame(meterFrame);
 }
 meterFrame();
+
+const mobileLike = window.matchMedia("(max-width:700px)").matches ||
+                   (navigator.maxTouchPoints > 0 && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
+if(mobileLike){
+  const vol=document.querySelector("#vol"), vp=document.querySelector("#vp");
+  if(vol) vol.style.display="none";
+  if(vp) vp.style.display="none";
+  const note=document.querySelector("#mobileVolNote");
+  if(note) note.style.display="block";
+}
+
+// App/PWA enhancements
+const savedStation = Number(localStorage.getItem("jamesRadioLastStation"));
+if(Number.isInteger(savedStation) && savedStation >= 0 && savedStation < S.length){
+  cur=savedStation;
+  document.querySelectorAll(".station").forEach(x=>x.classList.toggle("active",+x.dataset.i===cur));
+  ST.textContent=`마지막 방송: ${S[cur].freq} · ${S[cur].name} · 재생 버튼을 눌러주세요.`;
+}
+if("mediaSession" in navigator){
+  navigator.mediaSession.setActionHandler("play", async()=>{ if(cur<0) cur=0; if(!A.src) A.src=S[cur].url; try{await A.play()}catch(e){} });
+  navigator.mediaSession.setActionHandler("pause", ()=>A.pause());
+}
+if("serviceWorker" in navigator){
+  window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+}
+
 </script></body></html>
